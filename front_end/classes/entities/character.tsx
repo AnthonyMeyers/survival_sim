@@ -3,15 +3,13 @@ import { Entity } from "./entity";
 export default class Character extends Entity{
     //Types
     private name: string;
-    private sprite: string;
     private id: number;
     private speed : number;
 
     //Object construction
-    constructor(positionX: number, positionY: number, name:string, sprite:string, id:number){
-    super(positionX,positionY);
+    constructor(positionX: number, positionY: number, name:string, id:number, entityType:string){
+    super(positionX,positionY, entityType);
     this.name = name;
-    this.sprite = sprite;
     this.speed = 30;
     this.id = id;
   }
@@ -29,6 +27,11 @@ export default class Character extends Entity{
     get charPosX():number
     {
         return this.posX
+    }
+
+    get charEntity():string
+    {
+        return this.entityType
     }
 
     set charPosX(charPosX)

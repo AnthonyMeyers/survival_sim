@@ -1,0 +1,77 @@
+.human_male {
+  background: url("../graphics/sprites/human_male/human_male_movement/front_stand_still.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+.moveleft {
+  animation-name: human_male_left;
+}
+
+.moveright {
+  animation-name: human_male_right;
+}
+
+.moveup {
+  animation-name: human_male_up;
+}
+
+.movedown {
+  animation-name: human_male_down;
+}
+
+@keyframes human_male_left {
+  0% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/left_stand_still.png");
+  }
+  50% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_left_1.png");
+  }
+  100% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_left_2.png");
+  }
+}
+
+@keyframes human_male_right {
+  0% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/right_stand_still.png");
+  }
+  50% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_right_1.png");
+  }
+  100% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_right_2.png");
+  }
+}
+
+@keyframes human_male_up {
+  0% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/back_stand_still.png");
+  }
+  50% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_up_1.png");
+  }
+  100% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_up_2.png");
+  }
+}
+
+@keyframes human_male_down {
+  0% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/front_stand_still.png");
+  }
+  50% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_down_1.png");
+  }
+  100% {
+    background-image: url("../graphics/sprites/human_male/human_male_movement/step_down_2.png");
+  }
+}
+
+.rabbit {
+  background: url("../graphics/sprites/rabbit/rabbit_movement/left_Stand_still.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
