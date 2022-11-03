@@ -1,3 +1,4 @@
+import { createRef, useEffect } from "react";
 import Decor from "./decor/Decor";
 import StatusBar from "./status/StatusBar";
 

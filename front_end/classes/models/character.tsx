@@ -1,6 +1,6 @@
-import { Entity } from "./entity";
+import { Mdl_Entity } from "./entity";
 
-export default class Character extends Entity{
+export class Mdl_Character extends Mdl_Entity{
     //Types
     private name: string;
     private id: number;
@@ -52,6 +52,11 @@ export default class Character extends Entity{
     get charSpeed()
     {
         return this.speed;
+    }
+
+    get charMovement()
+    {
+        return this.movement;
     }
   }
 

@@ -1,61 +1,57 @@
-import Character from "../../../../../classes/entities/character";
+import {Mdl_Character} from "../../../../../classes/models/character";
 import {useEffect, useState} from "react";
-import {movementList} from "../../../../../classes/entities/entities";
-import { url } from "inspector";
-import { setTimeout } from "timers";
 
 interface Player {
-  character:Character;
-}
-
-const Player = ({character}:Player) => {
+  character:Mdl_Character,
+  parent:Element;}
+const Player = ({character,parent}:Player) => {
 
 const [player, setPlayer] = useState(character);
-const [parentElement, setParentElement] = useState<Element | null>();
 const [posX, setPosX] = useState(player.charPosX)
 const [posY, setPosY] = useState(player.charPosY)
-const [direction, setDirection] = useState<string>("down")
+const [direction, setDirection] = useState<string | null>(null)
 
 useEffect(()=>{
   document.addEventListener("keydown", handleCharactermovePress);
-  
   return () => removeEventListener("keydown",handleCharactermovePress);
   
 },[])
 
 function handleCharactermovePress(e:KeyboardEvent)
 {
-  console.log(parentElement?.clientHeight);
-  console.log(parentElement?.clientWidth)
-  if(e.code == 'ArrowLeft')
+  const height = parent.clientHeight
+  const width = parent.clientWidth
+
+  if(e.code == 'ArrowLeft' && player.charPosX < width - 50)
   {
+
   player.charPosX = player.charPosX + player.charSpeed
   setPosX(player.charPosX);
-  setDirection("moveleft");
+  setDirection(player.charMovement.left);
 
 }
 
-  if(e.code == 'ArrowRight')
+  if(e.code == 'ArrowRight'&& player.charPosX > 15)
   {
   player.charPosX = player.charPosX - player.charSpeed
   setPosX(player.charPosX);
-  setDirection("moveright");
+  setDirection(player.charMovement.right);
 }
-  if(e.code == 'ArrowUp'){
+  if(e.code == 'ArrowUp' && player.charPosY < height- 20){
   player.charPosY = player.charPosY + player.charSpeed 
   setPosY(player.charPosY);
-  setDirection("moveup");
+  setDirection(player.charMovement.up);
 }
-  if(e.code == 'ArrowDown'){
+  if(e.code == 'ArrowDown'&& player.charPosY > 0 + 20){
   player.charPosY = player.charPosY - player.charSpeed 
   setPosY(player.charPosY);
-  setDirection("movedown");
+  setDirection(player.charMovement.down);
 }
 
 }
 
   return (
-    <div className={`${player.charEntity} player ${direction}`} id={'player-' + player.charId} style={{right: `${posX}px`,bottom: `${posY}px`}}></div>
+    <div className={`${player.charEntity} player  ${direction}`} id={'player-' + player.charId} style={{right: `${posX}px`,bottom: `${posY}px`}}></div>
   )
 }
 
