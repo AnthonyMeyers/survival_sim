@@ -1,18 +1,16 @@
 import { FormEvent, useState } from "react";
 import axios from "axios";
-import { useLoginUserMutation } from "../../store/simulationapi";
 
 const Login_Form = () => {
     const [username, setUsername] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [userLogin] = useLoginUserMutation();
 
     const handleUserloginSubmit = async(e:FormEvent) =>{
         e.preventDefault();
-        userLogin({username,password});
+
         try{
-         const {data} = await axios.post("https://localhost:8000/api/messages/login",{username,password},
-        {withCredentials:true,
+         const {data} = await axios.post("https://localhost:8000/api/local_login",{username,password},
+            {withCredentials:true,
             headers: {'Content-Type': 'application/json',
         }})
         

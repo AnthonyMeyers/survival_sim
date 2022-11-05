@@ -12,7 +12,7 @@ export interface playerState {
 
 // Initial state
 const initialState: playerState = {
-  name: "Bruno", type:"human_male", posX: 50, posY:50
+  name: "Bruno", type:"human_male", posX: 28, posY:40
 };
 
 // Actual Slice

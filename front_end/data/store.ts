@@ -1,5 +1,6 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { playerslice } from "./playerSlice";
+import { adminOptionsSlice } from "./adminOptions";
 import { createWrapper } from "next-redux-wrapper";
 import { simulationapi } from "./simulationapi";
 import {
@@ -12,10 +13,12 @@ import {
   REGISTER,
 } from "redux-persist";
 
+
 const makeStore = () =>
   configureStore({
     reducer: {
       [playerslice.name]: playerslice.reducer,
+      [adminOptionsSlice.name]: adminOptionsSlice.reducer,
       [simulationapi.reducerPath]: simulationapi.reducer,
     },
     middleware: (getDefaultMiddleware) =>

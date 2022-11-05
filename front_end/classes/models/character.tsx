@@ -10,7 +10,7 @@ export class Mdl_Character extends Mdl_Entity{
     constructor(positionX: number, positionY: number, name:string, id:number, entityType:string){
     super(positionX,positionY, entityType);
     this.name = name;
-    this.speed = 32.75;
+    this.speed = 32;
     this.id = id;
   }
 

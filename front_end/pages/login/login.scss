@@ -34,7 +34,8 @@
     border-bottom: 1px solid gray;
     border-color: rgba(200, 200, 200, 0.3);
     transition: box-shadow 2s;
-    &:hover {
+    &:hover,
+    &:active {
       box-shadow: 5px 5px gray, 10px 10px lightgray;
     }
     &:before {
@@ -75,8 +76,8 @@
   }
   &__submit {
     font-size: 20px;
-    padding: 7.5px 12.5px;
-    border-radius: 25%;
+    padding: 7.5px 25px;
+    border-radius: 30px;
     font-weight: bolder;
     margin: 0 auto;
     text-align: center;

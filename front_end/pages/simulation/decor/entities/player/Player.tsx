@@ -37,7 +37,7 @@ function handleCharactermovePress(e:KeyboardEvent)
   setPosX(player.charPosX);
   setDirection(player.charMovement.right);
 }
-  if(e.code == 'ArrowUp' && player.charPosY < height- 20){
+  if(e.code == 'ArrowUp' && player.charPosY <= height - player.charSpeed){
   player.charPosY = player.charPosY + player.charSpeed 
   setPosY(player.charPosY);
   setDirection(player.charMovement.up);
