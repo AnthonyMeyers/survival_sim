@@ -1,5 +1,17 @@
 @use "./reset.scss";
+@use "./base/extends";
+@use "./base/variables" as *;
+@use "./base/fonts" as *;
+@use "./base/mixins" as *;
+@use "./base/icons.scss";
 @use "../pages/simulation/simulation.scss";
 @use "../pages/simulation/decor/entities/player/player.scss";
 @use "../pages/simulation/decor/entities/rabbit/rabbit.scss";
 @use "./entities.scss";
+@use "../pages/login/login.scss";
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+body {
+  font-family: "Roboto", sans-serif;
+}

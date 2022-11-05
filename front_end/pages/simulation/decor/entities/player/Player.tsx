@@ -7,8 +7,8 @@ interface Player {
 const Player = ({character,parent}:Player) => {
 
 const [player, setPlayer] = useState(character);
-const [posX, setPosX] = useState(player.charPosX)
-const [posY, setPosY] = useState(player.charPosY)
+const [posX, setPosX] = useState(player ? player.charPosX : null)
+const [posY, setPosY] = useState(player ? player.charPosY : null)
 const [direction, setDirection] = useState<string | null>(null)
 
 useEffect(()=>{
@@ -21,7 +21,7 @@ function handleCharactermovePress(e:KeyboardEvent)
 {
   const height = parent.clientHeight
   const width = parent.clientWidth
-
+  if(player && "charPosX" in player && "charPosY" in player){
   if(e.code == 'ArrowLeft' && player.charPosX < width - 50)
   {
 
@@ -31,7 +31,7 @@ function handleCharactermovePress(e:KeyboardEvent)
 
 }
 
-  if(e.code == 'ArrowRight'&& player.charPosX > 15)
+  if(e.code == 'ArrowRight'&& player.charPosX > 10)
   {
   player.charPosX = player.charPosX - player.charSpeed
   setPosX(player.charPosX);
@@ -47,11 +47,13 @@ function handleCharactermovePress(e:KeyboardEvent)
   setPosY(player.charPosY);
   setDirection(player.charMovement.down);
 }
-
+}
 }
 
   return (
-    <div className={`${player.charEntity} player  ${direction}`} id={'player-' + player.charId} style={{right: `${posX}px`,bottom: `${posY}px`}}></div>
+    <>
+    {player && <div className={`${player.charEntity} player  ${direction}`} id={'player-' + player.charId} style={{right: `${posX}px`,bottom: `${posY}px`}}>{player.charName}</div>}
+  </>
   )
 }
 
