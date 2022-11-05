@@ -24,6 +24,7 @@ export const adminOptionsSlice = createSlice({
     // Action to change name
     setShowGrid(state) {
       state.showGrid = !state.showGrid;
+      if(!state.showGrid)state.showCoords = false
     },
     setShowCoords(state) {
         if(state.showGrid){
