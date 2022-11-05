@@ -5,12 +5,14 @@ import { HYDRATE } from "next-redux-wrapper";
 // Type for our state
 export interface adminOptionsState {
   showGrid: boolean,
+  showCoords: boolean
 
 }
 
 // Initial state
 const initialState: adminOptionsState = {
-  showGrid: false
+  showGrid: false,
+  showCoords:false,
 };
 
 // Actual Slice
@@ -23,11 +25,15 @@ export const adminOptionsSlice = createSlice({
     setShowGrid(state) {
       state.showGrid = !state.showGrid;
     },
-
+    setShowCoords(state) {
+        if(state.showGrid){
+        state.showCoords = !state.showCoords;
+        }
+      },
   },
 });
 
-export const { setShowGrid } = adminOptionsSlice.actions;
+export const { setShowGrid, setShowCoords } = adminOptionsSlice.actions;
 
 export const selectAdminOptionsState = (state: AppState) => state.adminOptionsSlice;
 
