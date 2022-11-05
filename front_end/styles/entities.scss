@@ -21,6 +21,22 @@
   animation-name: human_male_down;
 }
 
+.stopLeft {
+  background-image: url("../graphics/sprites/human_male/human_male_movement/left_stand_still.png");
+}
+
+.stopRight {
+  background-image: url("../graphics/sprites/human_male/human_male_movement/right_stand_still.png");
+}
+
+.stopUp {
+  background-image: url("../graphics/sprites/human_male/human_male_movement/back_stand_still.png");
+}
+
+.stopdown {
+  background-image: url("../graphics/sprites/human_male/human_male_movement/front_stand_still.png");
+}
+
 @keyframes human_male_left {
   0% {
     background-image: url("../graphics/sprites/human_male/human_male_movement/left_stand_still.png");

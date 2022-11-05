@@ -7,7 +7,11 @@ export const css_cls_movement = {
   left : "moveleft",
   right: "moveright",
   up: "moveup",
-  down: "movedown"
+  down: "movedown",
+  stopLeft: "stopLeft",
+  stopRight: "stopRight",
+  stopUp: "stopUp",
+  stopDown: "stopDown"
 }
 
 export interface css_cls_int_movement  {
@@ -15,6 +19,10 @@ export interface css_cls_int_movement  {
   right: string,
   up: string,
   down: string
+  stopLeft: string,
+  stopRight: string,
+  stopUp: string,
+  stopDown: string
 }
 
 

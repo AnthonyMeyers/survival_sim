@@ -32,8 +32,16 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(3.3%, 1fr));
   &__cell {
-    border: 1px solid black;
     aspect-ratio: 1/1;
-    font-size: 13px;
+    &-show {
+      border: 1px solid black;
+      aspect-ratio: 1/1;
+      font-size: 13px;
+    }
+    &-berrybush {
+      background: url("../../graphics/props/berrybush.png");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
   }
 }

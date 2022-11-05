@@ -14,8 +14,33 @@ const [direction, setDirection] = useState<string | null>(null)
 useEffect(()=>{
   document.addEventListener("keydown", handleCharactermovePress);
   return () => removeEventListener("keydown",handleCharactermovePress);
-  
 },[])
+
+useEffect(()=>{
+  document.addEventListener("keyup", handleCharacterstopLift);
+  return () => removeEventListener("keyup",handleCharacterstopLift);
+},[])
+
+function handleCharacterstopLift(e:KeyboardEvent)
+{
+  if(player && "charPosX" in player && "charPosY" in player){
+    if(e.code == 'ArrowLeft' )
+    {
+      setDirection(player.charMovement.stopLeft);
+  }
+  
+    if(e.code == 'ArrowRight')
+    {
+      setDirection(player.charMovement.stopRight);
+  }
+    if(e.code == 'ArrowUp'){
+      setDirection(player.charMovement.stopUp);
+  }
+    if(e.code == 'ArrowDown'){
+      setDirection(player.charMovement.stopDown);
+  }
+}
+}
 
 function handleCharactermovePress(e:KeyboardEvent)
 {
