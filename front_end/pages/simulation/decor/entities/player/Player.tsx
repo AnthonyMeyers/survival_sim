@@ -23,6 +23,7 @@ useEffect(()=>{
 
 function handleCharacterstopLift(e:KeyboardEvent)
 {
+
   if(player && "charPosX" in player && "charPosY" in player){
     if(e.code == 'ArrowLeft' )
     {
@@ -47,28 +48,26 @@ function handleCharactermovePress(e:KeyboardEvent)
   const height = parent.clientHeight
   const width = parent.clientWidth
   if(player && "charPosX" in player && "charPosY" in player){
-  if(e.code == 'ArrowLeft' && player.charPosX < width - 50)
-  {
-
-  player.charPosX = player.charPosX + player.charSpeed
-  setPosX(player.charPosX);
-  setDirection(player.charMovement.left);
-
-}
-
-  if(e.code == 'ArrowRight'&& player.charPosX > 10)
+  if(e.code == 'ArrowLeft' && player.charPosX > 0)
   {
   player.charPosX = player.charPosX - player.charSpeed
   setPosX(player.charPosX);
+  setDirection(player.charMovement.left);
+}
+
+  if(e.code == 'ArrowRight'&& player.charPosX < width - 40)
+  {
+  player.charPosX = player.charPosX + player.charSpeed
+  setPosX(player.charPosX);
   setDirection(player.charMovement.right);
 }
-  if(e.code == 'ArrowUp' && player.charPosY <= height - player.charSpeed){
-  player.charPosY = player.charPosY + player.charSpeed 
+  if(e.code == 'ArrowUp' && player.charPosY > 0){
+  player.charPosY = player.charPosY - player.charSpeed 
   setPosY(player.charPosY);
   setDirection(player.charMovement.up);
 }
-  if(e.code == 'ArrowDown'&& player.charPosY > 0 + 20){
-  player.charPosY = player.charPosY - player.charSpeed 
+  if(e.code == 'ArrowDown'&& player.charPosY < height - 45){
+  player.charPosY = player.charPosY + player.charSpeed 
   setPosY(player.charPosY);
   setDirection(player.charMovement.down);
 }
@@ -77,7 +76,7 @@ function handleCharactermovePress(e:KeyboardEvent)
 
   return (
     <>
-    {player && <div className={`${player.charEntity} player  ${direction}`} id={'player-' + player.charId} style={{right: `${posX}px`,bottom: `${posY}px`}}>{player.charName}</div>}
+    {player && <div className={`${player.charEntity} player  ${direction}`} id={'player-' + player.charId} style={{left: `${posX}px`,top: `${posY}px`}}>{player.charName}</div>}
   </>
   )
 }

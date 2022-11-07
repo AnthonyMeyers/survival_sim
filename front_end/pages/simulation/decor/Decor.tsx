@@ -15,7 +15,6 @@ const Decor = () => {
   const [parent, setParent] = useState<Element>()
   const {name, type, posX, posY} = useSelector(selectPlayerState);
 
-  
   const [character,setCharacter] = useState<Mdl_Character>(entityfactory.createCharacter(posX,posY,name,type))
 
 useEffect(()=>{
