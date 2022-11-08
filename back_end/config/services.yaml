@@ -32,3 +32,13 @@ services:
                 name: kernel.event_listener
                 event: lexik_jwt_authentication.on_authentication_success
                 method: onAuthenticationSuccess
+
+    User.date_filter:
+        parent: 'api_platform.doctrine.orm.search_filter'
+        arguments: [ { username: ~ } ]
+        tags:  [ 'api_platform.filter' ]
+        # The following are mandatory only if a _defaults section is defined with inverted values.
+        # You may want to isolate filters in a dedicated file to avoid adding the following lines.
+        autowire: true
+        autoconfigure: true
+        public: true

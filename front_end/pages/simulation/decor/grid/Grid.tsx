@@ -30,13 +30,12 @@ const Grid = () => {
      useEffect(()=> {
       if(locations.length > 0 && props.length > 0)
       {
-        console.log(locations);
-        const propLocationsCompact = locations.map(({id, wmppPosX, wmppPosY,wmppWmpId}:any)=> ({id, wmppPosX, wmppPosY, propId:wmppWmpId.id}))
+        const propLocationsCompact = locations.map(({id, wmppPosX, wmppPosY,wmppPrpId}:any)=> ({id, wmppPosX, wmppPosY, propId:wmppPrpId.id}))
         setPropLocations(propLocationsCompact.map((v:any)=> ({...v,name: props.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.prpName : t,"")})))
         
         const gamegrid = new Array(20).fill(new Array(30).fill(""))
         setMappedGrid(gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ""}))))
-        const test = gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ''})));
+        const test = gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ""})));
         /*console.log(propLocations);
         console.log(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: propLocations.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))));*/
         setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: propLocations.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))))
@@ -47,11 +46,10 @@ const Grid = () => {
 
   return (
     <section className="gamegrid">
-      {mappedGrid.length > 0 && mappedGrid.map((v:gridcoords [])=> v.map(({gridX, gridY,entity}:gridcoords)=><div key={`${gridX} + ${gridY}`} id={`x${gridX}y${gridY}`} className={showGrid ? `gamegrid__cell-show ${entity.length > 0 ? 'gamegrid__cell'+"-"+entity : ""}`:`gamegrid__cell ${entity.length > 0 ? 'gamegrid__cell'+"-"+entity : ""}`}>{showCoords && `X:${gridX}, Y:${gridY}`}</div>))}
+      {mappedGrid.length > 0 && mappedGrid.map((v:gridcoords [])=> v.map(({gridX, gridY,entity}:gridcoords)=>
+      <div key={`${gridX} + ${gridY}`} id={`x${gridX}y${gridY}`} className={showGrid ? `gamegrid__cell-show ${entity.length > 0 ? 'gamegrid__cell'+"-"+entity : ""}`:`gamegrid__cell ${entity.length > 0 ? 'gamegrid__cell'+"-"+entity : ""}`}>{showCoords && `X:${gridX}, Y:${gridY}`}</div>))}
     </section>
   )
 }
 
 export default Grid
-
-        /*gamegrid && gamegrid.map((v,i) => <div key={i} className="gamegrid__cell"></div>)*/
