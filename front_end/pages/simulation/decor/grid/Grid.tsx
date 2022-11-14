@@ -11,9 +11,18 @@ interface gridcoords {
 
 const Grid = () => {
     const [props, setProps] = useState<any []>([]);
-    const [locations, setLocations] = useState<any []>([]);
+    const [animals, setAnimals] = useState<any []>([]);
+
+    const [subProplocations, setSubPropLocations] = useState<any []>([]);
     const [propLocations, setPropLocations] = useState<any []>([]);
+
+    const [subAnimalLocations, setSubAnimalLocations] = useState<any | []>([]);
+    const [animalLocations, setAnimalLocations] = useState<any | []>([]);
+
     const [mappedGrid, setMappedGrid] = useState<any []>([]);
+
+    const [pitstop, setPitstop] = useState<any>([]);
+
 
 
     const {showCoords, showGrid} = useSelector(selectAdminOptionsState);
@@ -22,27 +31,45 @@ const Grid = () => {
       (async () => {
        let {data: propData} = await axios('https://localhost:8000/api/props?page=1')
        setProps(propData["hydra:member"]);
-       let {data: locationData} = await axios('https://localhost:8000/api/worldmap_props?page=1')
-       setLocations(locationData["hydra:member"]);
+
+       let {data: animalData} = await axios('https://localhost:8000/api/animals?page=1')
+       setAnimals(animalData["hydra:member"]);
+
+       let {data: subPropLocationsdata} = await axios('https://localhost:8000/api/worldmap_props?page=1')
+       setSubPropLocations(subPropLocationsdata["hydra:member"]);
+ 
+       let {data: locationAnimalData} = await axios('https://localhost:8000/api/worldmap_animals?page=1')
+       setSubAnimalLocations(locationAnimalData["hydra:member"]);
+
      })()
      },[])
 
      useEffect(()=> {
-      if(locations.length > 0 && props.length > 0)
+      if(subProplocations.length > 0 &&  props.length > 0 && animals.length > 0 )
       {
-        const propLocationsCompact = locations.map(({id, wmppPosX, wmppPosY,wmppPrpId}:any)=> ({id, wmppPosX, wmppPosY, propId:wmppPrpId.id}))
+
+        //Get the id of the subject prop on the location, next get the name of the prop and set proplocations
+        const propLocationsCompact = subProplocations.map(({id, wmppPosX, wmppPosY,wmppPrpId}:any)=> ({pId:id, wmppPosX, wmppPosY, propId:wmppPrpId.id}))
         setPropLocations(propLocationsCompact.map((v:any)=> ({...v,name: props.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.prpName : t,"")})))
-        
+
+        //Get the id of the subject animal on the location, next get the name of the animal and set animallocations
+        const animalLocationsCompact = subAnimalLocations.map(({id, wmpaPosX, wmpaPosY,animal}:any)=> ({aId:id, wmppPosX:wmpaPosX, wmppPosY:wmpaPosY, propId:animal.id}))
+
+        //Made it so that props and animals come together in pitstop, which rolls out in mappedgrid for show
+        setAnimalLocations(animalLocationsCompact.map((v:any)=> ({...v,name: animals.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.AnlName : t,"")})))
+        setPitstop([...propLocations, ...animalLocations]);
+  
         const gamegrid = new Array(20).fill(new Array(30).fill(""))
+
         setMappedGrid(gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ""}))))
         const test = gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ""})));
-        /*console.log(propLocations);
-        console.log(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: propLocations.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))));*/
-        setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: propLocations.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))))
+
+        setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: pitstop.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))));
+
       }
 
 
-     },[locations, props])
+     },[subProplocations, props, animals, subAnimalLocations])
 
   return (
     <section className="gamegrid">
@@ -53,3 +80,6 @@ const Grid = () => {
 }
 
 export default Grid
+
+/*        setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: propLocations.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))))
+*/

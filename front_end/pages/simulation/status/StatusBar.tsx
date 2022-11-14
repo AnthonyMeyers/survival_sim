@@ -1,12 +1,16 @@
-import { selectAdminOptionsState, setShowGrid, setShowCoords } from "../../../data/adminOptions";
-import { useDispatch, useSelector } from "react-redux";
+
 
 const StatusBar = () => {
-  const dispatch = useDispatch();
+
 
   return (
-    <div className="statusbar">StatusBar<button onClick={()=>dispatch(setShowGrid())}>Show grid</button>
-    <button onClick={()=>dispatch(setShowCoords())}>Show coordinates</button></div>
+    <div className="statusbar">
+      <span className="statusbar__status">Health:</span>
+      <span className="statusbar__status">Hunger:</span>
+      <span className="statusbar__status">Thirst:</span>
+      <button className="statusbar__inventory">Bag</button>
+    </div>
+    
   )
 }
 
