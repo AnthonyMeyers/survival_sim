@@ -1,6 +1,6 @@
 import { selectAdminOptionsState } from "../../../../data/adminOptions";
 import { useDispatch, useSelector } from "react-redux";
-import {useEffect, useState} from "react";
+import {use, useEffect, useLayoutEffect, useState} from "react";
 import axios from 'axios';
 
 interface gridcoords {
@@ -16,22 +16,20 @@ const Grid = () => {
     const [subProplocations, setSubPropLocations] = useState<any []>([]);
     const [propLocations, setPropLocations] = useState<any []>([]);
 
-    const [subAnimalLocations, setSubAnimalLocations] = useState<any | []>([]);
-    const [animalLocations, setAnimalLocations] = useState<any | []>([]);
+    const [subAnimalLocations, setSubAnimalLocations] = useState<any []>([]);
+    const [animalLocations, setAnimalLocations] = useState<any []>([]);
 
     const [mappedGrid, setMappedGrid] = useState<any []>([]);
 
-    const [pitstop, setPitstop] = useState<any>([]);
-
-
-
     const {showCoords, showGrid} = useSelector(selectAdminOptionsState);
+
 
     useEffect(()=>{
       (async () => {
+        try{
        let {data: propData} = await axios('https://localhost:8000/api/props?page=1')
        setProps(propData["hydra:member"]);
-
+          
        let {data: animalData} = await axios('https://localhost:8000/api/animals?page=1')
        setAnimals(animalData["hydra:member"]);
 
@@ -41,12 +39,11 @@ const Grid = () => {
        let {data: locationAnimalData} = await axios('https://localhost:8000/api/worldmap_animals?page=1')
        setSubAnimalLocations(locationAnimalData["hydra:member"]);
 
+      }catch(e){console.log(e)}
      })()
      },[])
 
      useEffect(()=> {
-      if(subProplocations.length > 0 &&  props.length > 0 && animals.length > 0 )
-      {
 
         //Get the id of the subject prop on the location, next get the name of the prop and set proplocations
         const propLocationsCompact = subProplocations.map(({id, wmppPosX, wmppPosY,wmppPrpId}:any)=> ({pId:id, wmppPosX, wmppPosY, propId:wmppPrpId.id}))
@@ -57,8 +54,9 @@ const Grid = () => {
 
         //Made it so that props and animals come together in pitstop, which rolls out in mappedgrid for show
         setAnimalLocations(animalLocationsCompact.map((v:any)=> ({...v,name: animals.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.AnlName : t,"")})))
-        setPitstop([...propLocations, ...animalLocations]);
-  
+
+        const pitstop = [...animalLocations, ...propLocations];
+
         const gamegrid = new Array(20).fill(new Array(30).fill(""))
 
         setMappedGrid(gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ""}))))
@@ -66,11 +64,9 @@ const Grid = () => {
 
         setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: pitstop.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))));
 
-      }
+     },[props, animals, subProplocations, subAnimalLocations])
 
-
-     },[subProplocations, props, animals, subAnimalLocations])
-
+     
   return (
     <section className="gamegrid">
       {mappedGrid.length > 0 && mappedGrid.map((v:gridcoords [])=> v.map(({gridX, gridY,entity}:gridcoords)=>
@@ -80,6 +76,3 @@ const Grid = () => {
 }
 
 export default Grid
-
-/*        setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: propLocations.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))))
-*/
