@@ -55,14 +55,15 @@ const Grid = () => {
         //Made it so that props and animals come together in pitstop, which rolls out in mappedgrid for show
         setAnimalLocations(animalLocationsCompact.map((v:any)=> ({...v,name: animals.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.AnlName : t,"")})))
 
-        const pitstop = [...animalLocations, ...propLocations];
+        //Gather non player entity locations
+        const entities = [...animalLocations, ...propLocations];
 
         const gamegrid = new Array(20).fill(new Array(30).fill(""))
 
         setMappedGrid(gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ""}))))
         const test = gamegrid.map((arr: [],i: number) => arr.map((subv: [],subi: number)=> ({gridX: subi, gridY: i, entity: ""})));
 
-        setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: pitstop.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))));
+        setMappedGrid(test.map((v:any)=> v.map((subv:any) => ({...subv,entity: entities.reduce((t:any,subsubv:any)=> subv.gridX === subsubv.wmppPosX && subv.gridY === subsubv.wmppPosY ? subsubv.name : t,"")}))));
 
      },[props, animals, subProplocations, subAnimalLocations])
 
