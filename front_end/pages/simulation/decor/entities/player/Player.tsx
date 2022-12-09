@@ -1,5 +1,7 @@
 import {Mdl_Character} from "../../../../../classes/models/character";
 import {useEffect, useState} from "react";
+import { useSelector } from "react-redux";
+import {AppState} from "../../../../../data/store"
 
 interface Player {
   character:Mdl_Character,
@@ -11,15 +13,21 @@ const [posX, setPosX] = useState(player ? player.charPosX : null)
 const [posY, setPosY] = useState(player ? player.charPosY : null)
 const [direction, setDirection] = useState<string | null>(null)
 
-useEffect(()=>{
-  document.addEventListener("keydown", handleCharactermovePress);
-  return () => removeEventListener("keydown",handleCharactermovePress);
-},[])
+const isLoaded = useSelector((s:AppState) => s.loadSlice.isLoading)
 
 useEffect(()=>{
+  if(isLoaded){
+  document.addEventListener("keydown", handleCharactermovePress);
+}
+  return () => removeEventListener("keydown",handleCharactermovePress);
+},[isLoaded])
+
+useEffect(()=>{
+  if(isLoaded){
   document.addEventListener("keyup", handleCharacterstopLift);
+}
   return () => removeEventListener("keyup",handleCharacterstopLift);
-},[])
+},[isLoaded])
 
 function handleCharacterstopLift(e:KeyboardEvent)
 {

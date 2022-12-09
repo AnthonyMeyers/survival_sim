@@ -1,4 +1,4 @@
-import { createRef, useEffect, useRef, useState, useLayoutEffect } from "react";
+import { createRef, useEffect, useRef, useState } from "react";
 import {Mdl_Character} from "../../../classes/models/character";
 import Srv_EntityFactory from "../../../classes/services/entityfactory"
 import Player from "./entities/player/Player";

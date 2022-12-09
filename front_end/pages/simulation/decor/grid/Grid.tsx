@@ -1,10 +1,9 @@
 import { selectAdminOptionsState } from "../../../../data/adminOptions";
 import { setLoaded } from "../../../../data/loadingSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useLayoutEffect, useState} from "react";
+import { useEffect, useState} from "react";
 import axios from 'axios';
 import {AppState} from "../../../../data/store"
-import { setTimeout } from "timers";
 
 interface gridcoords {
   gridX:number,
@@ -48,7 +47,7 @@ const Grid = () => {
      
      },[])
 
-     useLayoutEffect(()=> {
+     useEffect(()=> {
 
        if(ApisLoaded){
         //Get the id of the subject prop on the location, next get the name of the prop and set proplocations
