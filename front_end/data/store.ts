@@ -1,8 +1,10 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import { playerslice } from "./playerSlice";
 import { adminOptionsSlice } from "./adminOptions";
+import { loadSlice } from "./loadingSlice";
 import { createWrapper } from "next-redux-wrapper";
 import { simulationapi } from "./simulationapi";
+
 import {
   persistReducer,
   FLUSH,
@@ -18,6 +20,7 @@ const makeStore = () =>
   configureStore({
     reducer: {
       [playerslice.name]: playerslice.reducer,
+      [loadSlice.name]:loadSlice.reducer,
       [adminOptionsSlice.name]: adminOptionsSlice.reducer,
       [simulationapi.reducerPath]: simulationapi.reducer,
     },
