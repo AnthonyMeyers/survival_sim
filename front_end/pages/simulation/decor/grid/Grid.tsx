@@ -2,8 +2,14 @@ import { selectAdminOptionsState } from "../../../../data/adminOptions";
 import { setLoaded } from "../../../../data/loadingSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState} from "react";
-import axios from 'axios';
-import {AppState} from "../../../../data/store"
+import {
+  useGetAnimalsQuery,
+  useGetPropsQuery,
+  useGetWorldmapPropsLocationsQuery,
+  useGetWorldmapAnimalLocationsQuery,
+  WorldmapProps
+
+} from "../../../../data/simulationapi"
 
 interface gridcoords {
   gridX:number,
@@ -14,52 +20,29 @@ interface gridcoords {
 const Grid = () => {
 
     const dispatch = useDispatch();
-    const isLoaded = useSelector((s:AppState) => s.loadSlice.isLoading)
-
-    const [ApisLoaded, setApisLoaded] = useState<boolean>(false);
-    const [props, setProps] = useState<any []>([]);
-    const [animals, setAnimals] = useState<any []>([]);
-
-    const [subProplocations, setSubPropLocations] = useState<any []>([]);
-    const [subAnimalLocations, setSubAnimalLocations] = useState<any []>([]);
+    
     const [mappedGrid, setMappedGrid] = useState<any []>([]);
     const {showCoords, showGrid} = useSelector(selectAdminOptionsState);
 
-
-    useEffect(()=>{
-      (async () => {
-
-        const promises = 
-        [await axios('https://localhost:8000/api/props?page=1'),
-        await axios('https://localhost:8000/api/animals?page=1'),
-        await axios('https://localhost:8000/api/worldmap_props?page=1'),
-        await axios('https://localhost:8000/api/worldmap_animals?page=1')]
-
-        const data  = await Promise.all(promises)
-        setProps(data[0].data["hydra:member"])
-        setAnimals(data[1].data["hydra:member"]);
-        setSubPropLocations(data[2].data["hydra:member"]);
-        setSubAnimalLocations(data[3].data["hydra:member"]);
-
-        setApisLoaded(true)
-
-     })()
-     
-     },[])
+    const {data: animalData, isLoading: animalLoading, isError: animalError, isSuccess : animalSuccess} = useGetAnimalsQuery()
+    const {data: propData, isLoading: propLoading, isError: propError, isSuccess: propSuccess} = useGetPropsQuery()
+    const {data: worldmapProps , isLoading: worldmapPropsLoading, isError: worldmapPropsError, isSuccess: worldmapPropsSuccess} = useGetWorldmapPropsLocationsQuery()
+    const {data: worldmapAnimals, isLoading: worldmapAnimalsLoading, isError: worldmapAnimalsError, isSuccess: worldmapAnimalsSuccess} = useGetWorldmapAnimalLocationsQuery()
 
      useEffect(()=> {
+      
+       if(worldmapPropsSuccess && worldmapAnimalsSuccess && propSuccess && animalSuccess){
 
-       if(ApisLoaded){
         //Get the id of the subject prop on the location, next get the name of the prop and set proplocations
-        const propLocationsCompact = subProplocations.map(({id, wmppPosX, wmppPosY,wmppPrpId}:any)=> ({pId:id, wmppPosX, wmppPosY, propId:wmppPrpId.id}))
-        const propLocationsLocal = (propLocationsCompact.map((v:any)=> ({...v,name: props.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.prpName : t,"")})))
-        
+        const propLocationsCompact = worldmapProps?.map(({id, wmppPosX, wmppPosY,wmppPrpId}:any)=> ({pId:id, wmppPosX, wmppPosY, propId:wmppPrpId.id}))
+        const propLocationsLocal = (propLocationsCompact?.map((v:any)=> ({...v,name: propData?.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.prpName : t,"")})))
+
         //Get the id of the subject animal on the location, next get the name of the animal and set animallocations
-        const animalLocationsCompact = subAnimalLocations.map(({id, wmpaPosX, wmpaPosY,animal}:any)=> ({aId:id, wmppPosX:wmpaPosX, wmppPosY:wmpaPosY, propId:animal.id}))
+        const animalLocationsCompact = worldmapAnimals?.map(({id, wmpaPosX, wmpaPosY,animal}:any)=> ({aId:id, wmppPosX:wmpaPosX, wmppPosY:wmpaPosY, propId:animal.id}))
         
         //Made it so that props and animals come together in pitstop, which rolls out in mappedgrid for show
-        const AnimalLocationsLocal = (animalLocationsCompact.map((v:any)=> ({...v,name: animals.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.AnlName : t,"")})))
-        
+        const AnimalLocationsLocal = (animalLocationsCompact?.map((v:any)=> ({...v,name: animalData?.reduce((t:any,subv:any)=> v.propId === subv.id ? subv.AnlName : t,"")}))) 
+
         //Gather non player entity locations
         const entities = [...AnimalLocationsLocal, ...propLocationsLocal];
 
@@ -78,7 +61,7 @@ const Grid = () => {
 
         dispatch(setLoaded())
       }
-     },[ApisLoaded])
+     },[worldmapAnimalsSuccess, worldmapAnimalsSuccess,propSuccess,animalSuccess])
 
 
   return (
